@@ -18,30 +18,56 @@ with oracledb.connect(user=username, password=password, dsn=host) as connection:
 def create_schema():
 
     tables = [
-        (
-        "("
-        "CREATE TABLE Mascota ("
+       
+      
+           
+        
+    (    "CREATE TABLE Mascota ("
         "id_mascota INT PRIMARY KEY,"         
         "edad INT,"
         "especie VARCHAR(255),"
         "historialMedico VARCHAR(255)"
         ")"
-
-        );
-        
-        (
-        "CREATE TABLE Perro (
-        "id_mascota INT PRIMARY KEY,          
-        "historialVacunas VARCHAR(255),
-        "FOREIGN KEY (id_mascota) REFERENCES Mascota(id_mascota)
-);
-   )
-
-(
-        "CREATE TABLE Ave ("
+      ),
+       
+      
+      (  "CREATE TABLE Perro ("
+        "id_mascota INT PRIMARY KEY,"          
+        "historialVacunas VARCHAR(255),"
+        "FOREIGN KEY (id_mascota) REFERENCES Mascota(id_mascota)"
+         ")"
+      ),
+         
+      
+      (  "CREATE TABLE Ave ("
         "id_mascota INT PRIMARY KEY,"          
         "tipoJaula VARCHAR(255),"
         "controlVuelo BOOLEAN,"
         "FOREIGN KEY (id_mascota) REFERENCES Mascota(id_mascota)"
-);
-)
+         ")"
+      ),
+      
+         
+      
+       
+        ( "CREATE TABLE Gato ("
+         "id_gato        NUMBER PRIMARY KEY,"
+         "esterilizado   CHAR(1) CHECK (esterilizado IN ('S','N')),"
+
+         "CONSTRAINT fk_gato_mascota"
+        "FOREIGN KEY (id_gato)"
+        "REFERENCES Mascota(id_mascota)"
+        "ON DELETE CASCADE"
+        ")"
+      ),
+      
+    ]
+
+for query in tables:
+    create_schema(query)
+
+    
+
+      
+
+
