@@ -60,3 +60,121 @@ def create_schema_all():
 
 
 create_schema_all()
+
+
+def insertar_mascota(cursor, id_mascota, edad, especie, historialMedico):
+    sql = """
+        INSERT INTO Mascota (id_mascota, edad, especie, historialMedico)
+        VALUES (:1, :2, :3, :4)
+    """
+    cursor.execute(sql, (id_mascota, edad, especie, historialMedico))
+    print("Mascota insertada correctamente.")
+
+
+ 
+def insertar_perro(cursor, id_mascota, historialVacunas):
+    sql = """
+        INSERT INTO Perro (id_mascota, historialVacunas)
+        VALUES (:1, :2)
+    """
+    cursor.execute(sql, (id_mascota, historialVacunas))
+    print("Perro insertado correctamente.")
+
+
+
+def insertar_ave(cursor, id_mascota, tipoJaula, controlVuelo):
+    sql = """
+        INSERT INTO Ave (id_mascota, tipoJaula, controlVuelo)
+        VALUES (:1, :2, :3)
+    """
+    cursor.execute(sql, (id_mascota, tipoJaula, controlVuelo))
+    print("Ave insertada correctamente.")
+
+
+
+def insertar_gato(cursor, id_gato, esterilizado):
+    sql = """
+        INSERT INTO Gato (id_gato, esterilizado)
+        VALUES (:1, :2)
+    """
+    cursor.execute(sql, (id_gato, esterilizado))
+    print("Gato insertado correctamente.")
+
+
+try:
+    with get_connection() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(sql, parametros)
+            connection.commit()
+            print("Insercion de datos correcta")
+except oracledb.DatabaseError as error:
+    print(f"no se pudo insertar el dato \n {error} \n {sql} \n {parametros} ")
+
+def read_mascota(id:int):
+    sql = (
+        "SELECT * FROM MASCOTA WHERE id = :id"
+    )
+    parametros = {"id" : id}
+    try:
+        with get_connection() as connection:
+            with connection.cursor() as cursor:
+                print(sql, parametros)
+                resultados = cursor.execute(sql, parametros)
+            if len(resultados) == 0:
+                return print(f"no hay registros con el ID{id}")
+            for fila in resultados:
+                print(fila)
+    except oracledb.DatabaseError as error:
+        print(f"no se pudo ejecutar la query {error} \n {sql} \n {parametros}")
+    
+
+def read_perro(id:int):
+    sql = (
+        "SELECT * FROM PERRO WHERE id = :id"
+    )
+    parametros = {"id" : id}
+    try:
+        with get_connection() as connection:
+            with connection.cursor() as cursor:
+                print(sql, parametros)
+                resultados = cursor.execute(sql, parametros)
+            if len(resultados) == 0:
+                return print(f"no hay registros con el ID{id}")
+            for fila in resultados:
+                print(fila)
+    except oracledb.DatabaseError as error:
+        print(f"no se pudo ejecutar la query {error} \n {sql} \n {parametros}")
+
+def read_ave(id:int):
+    sql = (
+        "SELECT * FROM AVE WHERE id = :id"
+    )
+    parametros = {"id" : id}
+    try:
+        with get_connection() as connection:
+            with connection.cursor() as cursor:
+                print(sql, parametros)
+                resultados = cursor.execute(sql, parametros)
+            if len(resultados) == 0:
+                return print(f"no hay registros con el ID{id}")
+            for fila in resultados:
+                print(fila)
+    except oracledb.DatabaseError as error:
+        print(f"no se pudo ejecutar la query {error} \n {sql} \n {parametros}")
+
+def read_gato(id:int):
+    sql = (
+        "SELECT * FROM GATO WHERE id = :id"
+    )
+    parametros = {"id" : id}
+    try:
+        with get_connection() as connection:
+            with connection.cursor() as cursor:
+                print(sql, parametros)
+                resultados = cursor.execute(sql, parametros)
+            if len(resultados) == 0:
+                return print(f"no hay registros con el ID{id}")
+            for fila in resultados:
+                print(fila)
+    except oracledb.DatabaseError as error:
+        print(f"no se pudo ejecutar la query {error} \n {sql} \n {parametros}")
