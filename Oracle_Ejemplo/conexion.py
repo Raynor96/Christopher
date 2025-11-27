@@ -58,8 +58,8 @@ def create_schema_all():
     for query in tables:
         create_schema(query)
 
-
 create_schema_all()
+
 
 
 def insertar_mascota(cursor, id_mascota, edad, especie, historialMedico):
@@ -178,3 +178,192 @@ def read_gato(id:int):
                 print(fila)
     except oracledb.DatabaseError as error:
         print(f"no se pudo ejecutar la query {error} \n {sql} \n {parametros}")
+
+
+
+from typing import Optional
+
+from typing import Optional 
+from datetime import datetime 
+
+
+def get_connection():
+   
+    class MockCursor:
+        def execute(self, sql, params):
+            print(f"Ejecutando SQL: {sql} con parámetros: {params}")
+        def __enter__(self): return self
+        def __exit__(self, exc_type, exc_val, exc_tb): pass
+
+    class MockConnection:
+        def cursor(self): return MockCursor()
+        def commit(self): print("Transacción confirmada.")
+        def __enter__(self): return self
+        def __exit__(self, exc_type, exc_val, exc_tb): pass
+
+    return MockConnection()
+
+def update_mascota(
+    id_mascota: int,
+    edad: Optional[int] = None,
+    especie: Optional[str] = None,
+    historial_medico: Optional[str] = None 
+):
+    modificaciones = []
+   
+    parametros = {"id_mascota": id_mascota}
+
+    if edad is not None:
+       
+        modificaciones.append("edad = :edad")
+        parametros["edad"] = edad
+
+    if especie is not None:
+        modificaciones.append("especie = :especie")
+        parametros["especie"] = especie
+
+    if historial_medico is not None:
+        
+        modificaciones.append("HistorialMedico = :historial_medico")
+        
+        parametros["historial_medico"] = historial_medico
+
+    if not modificaciones:
+        
+        print("No has enviado datos por modificar para la mascota.")
+        return
+
+   
+    sql = f"UPDATE mascota SET {", ".join(modificaciones)} WHERE id_mascota = :id_mascota"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, parametros)
+            conn.commit()
+          
+            print(f"Dato con ID = {id_mascota} actualizado en tabla 'mascota'")
+
+
+
+def update_perro(
+    id_mascota: int,
+    edad: Optional[int] = None,
+    especie: Optional[str] = None,
+    historial_vacuna: Optional[str] = None 
+):
+   
+    update_mascota(id_mascota, edad, especie)
+    
+   
+    modificaciones = []
+    parametros = {"id_mascota": id_mascota} 
+
+    if historial_vacuna is not None:
+       
+        modificaciones.append("HistorialVacuna = :historial_vacuna")
+        
+        parametros["historial_vacuna"] = historial_vacuna
+        
+    if not modificaciones:
+       
+        return 
+
+    
+    sql = f"UPDATE perro SET {", ".join(modificaciones)} WHERE id_mascota = :id_mascota"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato con ID = {id_mascota} actualizado en tabla 'perro'")
+
+
+def update_ave( 
+    id_mascota: int,
+    tipo_jaula: Optional[int] = None, # 
+    control_vuelo: Optional[str] = None, # 
+    historial_medico: Optional[str] = None # 
+):
+    
+    if historial_medico is not None:
+        update_mascota(id_mascota, historial_medico=historial_medico)
+
+    modificaciones = []
+    
+    parametros = {"id_mascota": id_mascota}
+
+   
+    if tipo_jaula is not None:
+        modificaciones.append("TipoJaula = :tipo_jaula")
+        parametros["tipo_jaula"] = tipo_jaula
+
+    
+    if control_vuelo is not None:
+        modificaciones.append("controlVuelo = :control_vuelo")
+        parametros["control_vuelo"] = control_vuelo
+
+    if not modificaciones:
+        print("No has enviado datos específicos de Ave por modificar.")
+        return
+
+    
+    sql = f"UPDATE ave SET {", ".join(modificaciones)} WHERE id_mascota = :id_mascota"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato con ID = {id_mascota} actualizado en tabla 'ave'")
+            
+
+
+def update_gato(
+    id_mascota: int, 
+    esterilizado: Optional[int] = None,
+    historial_medico: Optional[str] = None 
+):
+    
+    if historial_medico is not None:
+        update_mascota(id_mascota, historial_medico=historial_medico)
+        
+    modificaciones = []
+    
+    parametros = {"id_mascota": id_mascota}
+
+    if esterilizado is not None:
+        modificaciones.append("esterilizado = :esterilizado")
+        parametros["esterilizado"] = esterilizado
+
+    if not modificaciones:
+        print("No has enviado datos específicos de Gato por modificar.")
+        return
+
+    
+    sql = f"UPDATE gato SET {", ".join(modificaciones)} WHERE id_mascota = :id_mascota"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato con ID = {id_mascota} actualizado en tabla 'gato'")
+
+#eliminacion de datos
+
+def delete_mascota(id_mascota: int):
+    sql = (
+        "DELETE FROM MASCOTA WHERE id = :id"
+    )
+    parametros = {"id" : id}
+
+    try:
+        with get_connection() as conn:
+            with conn.cursor()as cur:
+                cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato eliminado /n {parametros}")
+    except oracledb.DatabaseError as e:
+        err = e
+        print(f"Error al eliminar dato: {err} /n {sql} /n {parametros}")
+
+def delete_perro(id: int):
+    sql
