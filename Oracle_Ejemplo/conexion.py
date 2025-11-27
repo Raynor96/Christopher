@@ -106,9 +106,10 @@ try:
         with connection.cursor() as cursor:
             cursor.execute(sql, parametros)
             connection.commit()
-            print("Insercion de datos correcta")
+            print("Inserción de datos correcta")
 except oracledb.DatabaseError as error:
-    print(f"no se pudo insertar el dato \n {error} \n {sql} \n {parametros} ")
+    print(f"No se pudo insertar el dato:\n{error}\nSQL: {sql}\nParámetros: {parametros}")
+
 
 def read_mascota(id:int):
     sql = (
@@ -365,5 +366,44 @@ def delete_mascota(id_mascota: int):
         err = e
         print(f"Error al eliminar dato: {err} /n {sql} /n {parametros}")
 
-def delete_perro(id: int):
-    sql
+def delete_perro(id_perro: int):
+    sql = "DELETE FROM PERRO WHERE id = :id"
+    parametros = {"id": id_perro}
+
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato eliminado\n{parametros}")
+    except oracledb.DatabaseError as e:
+        print(f"Error al eliminar dato: {e}\nSQL: {sql}\nParámetros: {parametros}")
+
+
+def delete_gato(id_gato: int):
+    sql = "DELETE FROM GATO WHERE id = :id"
+    parametros = {"id": id_gato}
+
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato eliminado\n{parametros}")
+    except oracledb.DatabaseError as e:
+        print(f"Error al eliminar dato: {e}\nSQL: {sql}\nParámetros: {parametros}")
+
+
+def delete_ave(id_ave: int):
+    sql = "DELETE FROM AVE WHERE id = :id"
+    parametros = {"id": id_ave}
+
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato eliminado\n{parametros}")
+    except oracledb.DatabaseError as e:
+        print(f"Error al eliminar dato: {e}\nSQL: {sql}\nParámetros: {parametros}")
+
