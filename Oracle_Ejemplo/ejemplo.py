@@ -7,10 +7,16 @@ from typing import Optional
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
 
+
+ORACLE_USER = "C##christopher_ruiz"
+ORACLE_PASSWORD = "Inacap#2025"
+ORACLE_DSN = "10.50.1.0/xe"
+
+
 # Configuración de la conexión a Oracle
-username = os.getenv("C##christopher_ruiz")
-dsn = os.getenv("10.50.1.0/xe")
-password = os.getenv("inacap2025")
+username = os.getenv("ORACLE_USER")
+dsn = os.getenv("ORACLE_DSN")
+password = os.getenv("ORACLE_PASSWORD")
 
 
 def clear_screen():
