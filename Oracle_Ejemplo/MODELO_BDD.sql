@@ -37,3 +37,4 @@ CREATE TABLE Ave (
         FOREIGN KEY (id_mascota) 
         REFERENCES Mascota(id_mascota)
 );
+

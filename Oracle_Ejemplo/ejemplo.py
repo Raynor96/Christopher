@@ -4,13 +4,13 @@ import os
 from dotenv import load_dotenv
 from typing import Optional
 
-# Carga las variables de entorno desde el archivo .env
+
 load_dotenv()
 
 
 ORACLE_USER = "C##christopher_ruiz"
-ORACLE_PASSWORD = "Inacap#2025"
-ORACLE_DSN = "10.50.1.0/xe"
+ORACLE_PASSWORD = "inacap#2025"
+ORACLE_DSN = "192.168.50.186/xe"
 
 
 # Configuración de la conexión a Oracle
@@ -96,7 +96,7 @@ def create_all_tables():
     for query in tables:
         create_schema(query)
 
-# --- Funciones CRUD: MASCOTAS (Principal) ---
+# --- Funciones CRUD: MASCOTAS 
 
 # CREATE
 def create_mascota(
@@ -165,7 +165,7 @@ def read_mascotas():
     except oracledb.DatabaseError as error:
         print(f"No se pudo ejecutar la consulta:\n{error}\nSQL: {sql}")
 
-# READ BY ID (Implementación Faltante)
+# READ BY ID 
 def read_mascota_by_id(id_mascota: int):
     """Consulta y muestra una mascota por ID."""
     sql = "SELECT id, nombre, especie, dueno, fecha_nacimiento, fecha_registro FROM MASCOTAS WHERE id = :id_mascota"
@@ -199,7 +199,7 @@ def read_mascota_by_id(id_mascota: int):
     except oracledb.DatabaseError as error:
         print(f"No se pudo ejecutar la consulta:\n{error}\nSQL: {sql}\nParámetros: {parametros}")
 
-# UPDATE (Implementación Faltante)
+# UPDATE 
 def update_mascota(
     id: int,
     nombre: Optional[str] = None,
@@ -222,7 +222,6 @@ def update_mascota(
         parametros["dueno"] = dueno
     if fecha_nacimiento is not None:
         modificaciones.append("fecha_nacimiento = :fecha_nacimiento")
-        # Asegurarse de usar el formato de fecha correcto para la conversión
         try:
             parametros["fecha_nacimiento"] = datetime.strptime(fecha_nacimiento, "%d-%m-%Y")
         except ValueError:
@@ -248,7 +247,7 @@ def update_mascota(
     except oracledb.DatabaseError as error:
         print(f"Error al actualizar el dato:\n{error}\nSQL: {sql}\nParámetros: {parametros}")
 
-# DELETE (Implementación Faltante)
+# DELETE 
 def delete_mascota(id: int):
     """Elimina una mascota por ID (y sus detalles específicos debido a ON DELETE CASCADE)."""
     sql = "DELETE FROM MASCOTAS WHERE id = :id"
@@ -269,7 +268,7 @@ def delete_mascota(id: int):
         print(f"Error al eliminar la mascota:\n{error}\nSQL: {sql}\nParámetros: {parametros}")
 
 
-# --- Funciones de Inserción de Detalles Específicos ---
+# --- Funciones de Inserción de Detalles 
 # CREATE PERRO
 def create_perro(idMascota: int, raza: str, adiestramiento: Optional[str] = None):
     """Inserta detalles específicos para un Perro, asumiendo que la mascota ya existe."""
@@ -343,7 +342,7 @@ def create_ave(idMascota: int, tipo_pico: str, puede_volar: str):
         print(f"No se pudo insertar el detalle de AVE:\n{error}\nSQL: {sql}\nParámetros: {parametros}")
 
 
-# --- Funciones de Lectura de Detalles Específicos (Nuevas) ---
+# --- Funciones de Lectura de Detalles 
 
 def read_perro_by_id(id_mascota: int):
     """Consulta y muestra los detalles de PERRO por idMascota."""
@@ -405,7 +404,7 @@ def read_ave_by_id(id_mascota: int):
         print(f"Error al consultar detalles de AVE:\n{error}")
 
 
-# --- Funciones de Menú (Adaptadas) ---
+# --- Funciones de Menú 
 
 def menu_mascotas():
     """Menú CRUD para la tabla principal MASCOTAS y sus detalles."""
