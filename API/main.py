@@ -49,8 +49,8 @@ class Finance:
 
 class Datebase:
     def __init__(self, username,password,dsn):
-    self.username = username
-    self.password = password
-    self.dsn = dsn
-    def get_connection(self):
+        self.username = username
+        self.password = password
+        self.dsn = dsn
+    def getconnection(self):
         return oracledb.connect(user=self.username, password=self.password, dsn=self.dsn)
